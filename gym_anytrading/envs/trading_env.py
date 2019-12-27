@@ -30,7 +30,7 @@ class TradingEnv(gym.Env):
         self.df = df
         self.window_size = window_size
         self.prices, self.signal_features = self._process_data()
-        self.shape = (window_size, self.signal_features.shape[1]) if window_size > 1 else self.signal_features.shape[1]
+        self.shape = (window_size, self.signal_features.shape[1]) if window_size > 1 else (self.signal_features.shape[1],)
 
         # spaces
         self.action_space = spaces.Discrete(len(Actions))
