@@ -23,12 +23,13 @@ class TradingEnv(gym.Env):
 
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, df, window_size):
+    def __init__(self, df, window_size, min_index_start):
         assert df.ndim == 2
 
         self.seed()
         self.df = df
         self.window_size = window_size
+        self.min_index_start = min_index_start
         self.prices, self.signal_features = self._process_data()
         self.shape = (window_size, self.signal_features.shape[1]) if window_size > 1 else (self.signal_features.shape[1],)
 
@@ -37,7 +38,7 @@ class TradingEnv(gym.Env):
         self.observation_space = spaces.Box(low=np.inf, high=np.inf, shape=self.shape, dtype=np.float32)
 
         # episode
-        self._start_tick = self.window_size
+        self._start_tick = self.window_size + self.min_index_start
         self._end_tick = len(self.prices) - 1
         self._done = None
         self._current_tick = None
